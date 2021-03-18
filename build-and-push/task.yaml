@@ -14,6 +14,7 @@ spec:
     default: ""
   steps:
   - image: docker
+    workingDir: $(workspaces.source.path)
     name: client
     env:
     - name: DOCKER_HOST
