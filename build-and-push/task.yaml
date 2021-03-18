@@ -14,7 +14,7 @@ spec:
   - name: revision
     type: string
     default: ""
-    steps:
+  steps:
     - image: docker
       name: client
       env:
