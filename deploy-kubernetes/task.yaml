@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: deploy-kubernetes-helm
+spec:
+  workspaces:
+  - name: source
+  steps:
+  - name: deploy
+    image: docker.io/alpine/helm:latest
+    workingDir: $(workspaces.source.path)
+    script: |
+      helm ins
+
