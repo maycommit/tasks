@@ -12,6 +12,9 @@ spec:
   - name: revision
     type: string
     default: ""
+  results:
+    - name: current-image
+      description: The current image
   steps:
   - image: docker
     workingDir: $(workspaces.source.path)
@@ -30,6 +33,8 @@ spec:
         docker login --username=mayconjrpacheco --password=23224c83-f9fd-4718-a99d-7b08ba951de9
         docker build -t pipes2/$(params.name):$(params.revision) -f ./cmd/Dockerfile .
         docker push pipes2/$(params.name):$(params.revision)
+        
+        echo "pipes2/$(params.name):$(params.revision)" | tee $(results.current-image.path)
     volumeMounts:
     - mountPath: /certs/client
       name: dind-certs
