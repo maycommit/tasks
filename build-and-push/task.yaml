@@ -17,9 +17,6 @@ spec:
   steps:
   - name: client
     image: docker
-    env:
-    - name: DOCKER_HOST
-      value: tcp://localhost:2376
     workingDir: $(workspaces.source.path)
     script: |
       docker ps
