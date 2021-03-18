@@ -3,15 +3,6 @@ kind: Task
 metadata:
   name: build-and-push
 spec:
-  workspaces:
-  - name: source
-  params:
-  - name: name
-    type: string
-    default: ""
-  - name: revision
-    type: string
-    default: ""
   steps:
     - image: docker
       name: client
