@@ -4,59 +4,59 @@ metadata:
   name: build-and-push
 spec:
   steps:
-    - image: docker
-      name: client
-      env:
-      - name: DOCKER_HOST
-        value: tcp://localhost:2376
-      - name: DOCKER_TLS_VERIFY
-        value: '1'
-      - name: DOCKER_CERT_PATH
-        value: /certs/client
-      script: |
-          #!/usr/bin/env sh
-          set -e
-          # Run a Docker container.
-          docker run busybox echo hello
+  - image: docker
+    name: client
+    env:
+    - name: DOCKER_HOST
+      value: tcp://localhost:2376
+    - name: DOCKER_TLS_VERIFY
+      value: '1'
+    - name: DOCKER_CERT_PATH
+      value: /certs/client
+    script: |
+        #!/usr/bin/env sh
+        set -e
+        # Run a Docker container.
+        docker run busybox echo hello
 
-          # Write a Dockerfile and `docker build` it.
-          cat > Dockerfile << EOF
-          FROM ubuntu
-          RUN apt-get update
-          ENTRYPOINT ["echo", "hello"]
-          EOF
-          docker build -t hello .
-          docker images
+        # Write a Dockerfile and `docker build` it.
+        cat > Dockerfile << EOF
+        FROM ubuntu
+        RUN apt-get update
+        ENTRYPOINT ["echo", "hello"]
+        EOF
+        docker build -t hello .
+        docker images
 
-          # ...then run it!
-          docker run hello
-      volumeMounts:
-      - mountPath: /certs/client
-        name: dind-certs
+        # ...then run it!
+        docker run hello
+    volumeMounts:
+    - mountPath: /certs/client
+      name: dind-certs
 
-    sidecars:
-    - image: docker:dind
-      name: server
-      args:
-        - --storage-driver=vfs
-        - --userland-proxy=false
-        - --debug
-      resources:
-        requests:
-          memory: "512Mi"
-      securityContext:
-        privileged: true
-      env:
-      - name: DOCKER_TLS_CERTDIR
-        value: /certs
-      volumeMounts:
-      - mountPath: /certs/client
-        name: dind-certs
-      readinessProbe:
-        periodSeconds: 1
-        exec:
-          command: ['ls', '/certs/client/ca.pem']
+  sidecars:
+  - image: docker:dind
+    name: server
+    args:
+      - --storage-driver=vfs
+      - --userland-proxy=false
+      - --debug
+    resources:
+      requests:
+        memory: "512Mi"
+    securityContext:
+      privileged: true
+    env:
+    - name: DOCKER_TLS_CERTDIR
+      value: /certs
+    volumeMounts:
+    - mountPath: /certs/client
+      name: dind-certs
+    readinessProbe:
+      periodSeconds: 1
+      exec:
+        command: ['ls', '/certs/client/ca.pem']
 
-    volumes:
-    - name: dind-certs
-      emptyDir: {}
+  volumes:
+  - name: dind-certs
+    emptyDir: {}
