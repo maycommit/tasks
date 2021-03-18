@@ -18,6 +18,10 @@ spec:
   - name: client
     image: docker
     workingDir: $(workspaces.source.path)
+    env:
+      # Connect to the sidecar over TCP, with TLS.
+      - name: DOCKER_HOST
+        value: tcp://localhost:2376
     script: |
       docker ps
       docker login --username=mayconjrpacheco --password=23224c83-f9fd-4718-a99d-7b08ba951de9
