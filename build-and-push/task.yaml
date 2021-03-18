@@ -28,8 +28,8 @@ spec:
         set -e
 
         docker login --username=mayconjrpacheco --password=23224c83-f9fd-4718-a99d-7b08ba951de9
-        docker build -t mayconjrpacheco/pipes/$(params.name):$(params.revision) -f ./cmd/Dockerfile .
-        docker push mayconjrpacheco/pipes/$(params.name):$(params.revision)
+        docker build -t mayconjrpacheco/pipes2/$(params.name):$(params.revision) -f ./cmd/Dockerfile .
+        docker push mayconjrpacheco/pipes2/$(params.name):$(params.revision)
     volumeMounts:
     - mountPath: /certs/client
       name: dind-certs
