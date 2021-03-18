@@ -17,8 +17,7 @@ spec:
   steps:
   - name: client
     image: docker
-   env:
-    # Connect to the sidecar over TCP, with TLS.
+    env:
     - name: DOCKER_HOST
       value: tcp://localhost:2376
     workingDir: $(workspaces.source.path)
